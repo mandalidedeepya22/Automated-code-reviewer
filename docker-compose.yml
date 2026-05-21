@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  code-reviewer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai-code-reviewer
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./reports:/app/reports
+      - ./uploads:/app/uploads
+      - code-reviewer-db:/app/database
+    environment:
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=8501
+      - DEBUG=False
+      - DATABASE_PATH=/app/database/code_reviewer.db
+      - UPLOAD_DIR=/app/uploads
+      - REPORTS_DIR=/app/reports
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  code-reviewer-db:
+    driver: local
