@@ -1,91 +1,124 @@
 /**
- * Sample Java code for testing the AI Code Reviewer.
- * This file contains intentional issues for testing purposes.
+ * Sample Java code with intentional issues for testing the code reviewer.
+ * This file contains various security vulnerabilities, code smells, and style issues.
  */
 
 import java.sql.*;
 import java.util.*;
 import java.io.*;
 
-// Class naming convention violation (should be TestJavaSamples)
 public class test_java {
     
-    // Hardcoded credentials
+    // Hardcoded credentials (SECURITY ISSUE)
     private static final String DB_PASSWORD = "admin123";
-    private static final String API_KEY = "sk_live_abcdef123456";
+    private static final String API_KEY = "sk_live_1234567890abcdef";
     
-    // Uninitialized variable
-    private String userName;
-    private int userAge;
+    // Public mutable static field (CODE SMELL)
+    public static int globalCounter = 0;
     
-    // Public mutable static field
-    public static List<String> globalList = new ArrayList<>();
+    // Unused import would be here if we had one
     
-    // Missing docstring
-    public void processUserInput(String input) {
-        // SQL injection vulnerability
-        String query = "SELECT * FROM users WHERE name = '" + input + "'";
-        
+    // Missing class documentation
+    class InnerClass {
+        // Empty class
+    }
+    
+    // SQL Injection vulnerability (CRITICAL SECURITY ISSUE)
+    public ResultSet sqlInjectionExample(Connection conn, String userId) throws SQLException {
+        String query = "SELECT * FROM users WHERE id = " + userId;
+        Statement stmt = conn.createStatement();
+        return stmt.executeQuery(query);
+    }
+    
+    // Command Injection vulnerability (CRITICAL SECURITY ISSUE)
+    public void commandInjectionExample(String userPath) throws Exception {
+        Runtime runtime = Runtime.getRuntime();
+        runtime.exec("cat " + userPath);
+    }
+    
+    // Missing null check (LOGIC ERROR)
+    public String getValue(Optional<String> optional) {
+        return optional.get().toUpperCase();
+    }
+    
+    // Uninitialized variable (LOGIC ERROR)
+    public void uninitializedVariable() {
+        int x;
+        int y;
+        // Using without initialization
+        System.out.println(x);
+    }
+    
+    // Long method (CODE SMELL)
+    public void longMethod() {
+        int a = 1;
+        int b = 2;
+        int c = 3;
+        int d = a + b;
+        int e = b + c;
+        int f = d + e;
+        int g = f * 2;
+        int h = g - 1;
+        int i = h + 10;
+        int j = i * 3;
+        int k = j / 2;
+        int l = k + 5;
+        int m = l - 3;
+        int n = m * 4;
+        int o = n + 7;
+        int p = o / 3;
+        int q = p - 2;
+        int r = q + 8;
+        int s = r * 5;
+        int t = s / 4;
+        int u = t + 1;
+        int v = u - 4;
+        int w = v * 6;
+        System.out.println(w);
+    }
+    
+    // Too many parameters (CODE SMELL)
+    public void tooManyParameters(int a, int b, int c, int d, int e, 
+                                  int f, int g, int h, int i, int j) {
+        System.out.println(a + b + c + d + e + f + g + h + i + j);
+    }
+    
+    // Empty catch block (CODE SMELL)
+    public void emptyCatch() {
         try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-        } catch (SQLException e) {
-            // Empty catch block
+            int result = 10 / 0;
+        } catch (ArithmeticException e) {
+            // Empty catch
         }
     }
     
-    // Missing docstring
-    public Object deserializeObject(byte[] data) {
-        // Insecure deserialization
+    // Catching generic Exception (CODE SMELL)
+    public void genericCatch() {
         try {
-            ByteArrayInputStream bis = new ByteArrayInputStream(data);
-            ObjectInputStream ois = new ObjectInputStream(bis);
-            return ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
+            int result = 10 / 0;
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
     }
     
-    // Command injection vulnerability
-    public void runCommand(String userCommand) {
-        try {
-            Runtime.getRuntime().exec(userCommand);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Magic numbers (CODE SMELL)
+    public double calculateArea(double radius) {
+        return 3.14159 * radius * radius;
     }
     
-    // Too many parameters
-    public User createUser(String name, String email, int age, String address, 
-                          String phone, String city, String state, String zip) {
-        return new User(name, email, age, address, phone, city, state, zip);
+    public double calculateTax(double amount) {
+        return amount * 0.08;
     }
     
-    // Long method (should be refactored)
-    public void processOrder(Order order) {
-        // This method is intentionally long
-        if (order != null) {
-            if (order.getItems() != null) {
-                if (!order.getItems().isEmpty()) {
-                    double total = 0;
-                    for (OrderItem item : order.getItems()) {
-                        if (item.getPrice() > 0) {
-                            total += item.getPrice() * item.getQuantity();
-                        }
-                    }
-                    if (total > 0) {
-                        if (order.getCustomer() != null) {
-                            if (order.getCustomer().getId() != null) {
-                                // Apply discount
-                                if (order.getCustomer().isPremium()) {
-                                    total = total * 0.9;
-                                }
-                                // Add tax
-                                total = total * 1.08;
-                                // Add shipping
-                                total = total + 5.99;
-                                order.setTotal(total);
+    // Deeply nested code (COMPLEXITY ISSUE)
+    public void nestedCode(List<List<List<Integer>>> data) {
+        for (List<List<Integer>> outer : data) {
+            for (List<Integer> middle : outer) {
+                for (Integer inner : middle) {
+                    if (inner > 0) {
+                        if (inner < 100) {
+                            if (inner % 2 == 0) {
+                                System.out.println(inner);
                             }
                         }
                     }
@@ -94,110 +127,74 @@ public class test_java {
         }
     }
     
-    // Missing null check
-    public String getUserName(User user) {
-        return user.getName().toUpperCase(); // Potential NPE
+    // Duplicate code blocks (CODE SMELL)
+    public List<Integer> filterEven1(List<Integer> numbers) {
+        List<Integer> result = new ArrayList<>();
+        for (Integer num : numbers) {
+            if (num % 2 == 0) {
+                result.add(num);
+            }
+        }
+        return result;
     }
     
-    // Catching generic Exception
-    public void riskyOperation() {
-        try {
-            // Various operations
-            throw new RuntimeException("Test");
-        } catch (Exception e) {
-            // Too broad catch
+    public List<Integer> filterEven2(List<Integer> numbers) {
+        List<Integer> result = new ArrayList<>();
+        for (Integer num : numbers) {
+            if (num % 2 == 0) {
+                result.add(num);
+            }
+        }
+        return result;
+    }
+    
+    // Missing override annotation
+    public String toString() {
+        return "test_java";
+    }
+    
+    // Non-private final static field (SECURITY ISSUE - could be exploited via reflection)
+    public static final String SECRET = "my-secret-key";
+    
+    // Insecure random (SECURITY ISSUE)
+    public int generateToken() {
+        Random random = new Random();
+        return random.nextInt();
+    }
+    
+    // Resource leak (CODE SMELL)
+    public void resourceLeak() throws Exception {
+        FileInputStream fis = new FileInputStream("file.txt");
+        // Never closed
+        int data = fis.read();
+        System.out.println(data);
+    }
+    
+    // Synchronization on non-final field (CODE SMELL)
+    private Object lock = new Object();
+    
+    public void synchronizedMethod() {
+        synchronized (lock) {
+            System.out.println("Synchronized");
         }
     }
     
-    // Using raw types
-    public void processList(List items) {
-        for (Object item : items) {
-            System.out.println(item);
+    // Cloneable without proper implementation (CODE SMELL)
+    class BadClone implements Cloneable {
+        @Override
+        protected Object clone() throws CloneNotSupportedException {
+            return super.clone();
         }
     }
     
-    // Magic numbers
-    public double calculatePrice(double basePrice) {
-        return basePrice * 1.08 * 0.9 + 5.99;
+    // Finalize method (DEPRECATED)
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
     }
     
-    // Thread safety issue
-    private static int counter = 0;
-    
-    public void incrementCounter() {
-        counter++; // Not thread-safe
-    }
-    
-    // Resource leak
-    public String readFile(String path) throws IOException {
-        FileInputStream fis = new FileInputStream(path);
-        byte[] data = new byte[fis.available()];
-        fis.read(data);
-        // Stream not closed
-        return new String(data);
-    }
-    
-    // Inner class should be static
-    public class InnerClass {
-        private int value;
-        
-        public int getValue() {
-            return value;
-        }
-    }
-    
-    // Overly broad visibility
+    // Main method for testing
     public static void main(String[] args) {
-        test_java app = new test_java();
-        app.processUserInput("test");
+        System.out.println("Test Java code with issues");
     }
-}
-
-// Helper classes
-class User {
-    private String name;
-    private String email;
-    private int age;
-    private String address;
-    private String phone;
-    private String city;
-    private String state;
-    private String zip;
-    
-    public User(String name, String email, int age, String address, 
-                String phone, String city, String state, String zip) {
-        this.name = name;
-        this.email = email;
-        this.age = age;
-        this.address = address;
-        this.phone = phone;
-        this.city = city;
-        this.state = state;
-        this.zip = zip;
-    }
-    
-    public String getName() { return name; }
-    public String getEmail() { return email; }
-    public int getAge() { return age; }
-    public boolean isPremium() { return age > 65; }
-    public Long getId() { return 1L; }
-}
-
-class Order {
-    private List<OrderItem> items;
-    private User customer;
-    private double total;
-    
-    public List<OrderItem> getItems() { return items; }
-    public User getCustomer() { return customer; }
-    public double getTotal() { return total; }
-    public void setTotal(double total) { this.total = total; }
-}
-
-class OrderItem {
-    private double price;
-    private int quantity;
-    
-    public double getPrice() { return price; }
-    public int getQuantity() { return quantity; }
 }
