@@ -72,8 +72,9 @@ env/
 *.sqlite
 *.sqlite3
 
-# Streamlit
+# Streamlit (allow config file for deployment)
 .streamlit/
+!.streamlit/config.toml
 
 # Uploads and reports
 uploads/

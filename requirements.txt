@@ -1,5 +1,5 @@
-# Core Streamlit framework
-streamlit==1.32.2
+# Core Streamlit framework - upgraded to support Pillow 11.x with Python 3.14 wheels
+streamlit==1.40.0
 
 # HTTP requests for GitHub API
 requests==2.31.0
