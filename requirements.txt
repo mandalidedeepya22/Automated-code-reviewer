@@ -1,12 +1,18 @@
+# Core Streamlit framework
 streamlit==1.32.2
+
+# HTTP requests for GitHub API
 requests==2.31.0
+
+# Character encoding detection
 chardet==5.2.0
+
+# GitHub API integration
+PyGithub==2.1.1
+
+# Environment variables
+python-dotenv==1.0.0
+
+# Static analysis tools (used via subprocess)
 pylint==3.0.0
 flake8==6.1.0
-bandit==1.7.5
-radon==6.0.1
-python-dotenv==1.0.0
-PyGithub==2.1.1
-reportlab==4.0.7
-Markdown==3.5.1
-Pygments==2.17.2
